@@ -1,12 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ProviderEnrollment.Api.Contracts;
 
-public sealed record ReadinessSummaryDto(
-  int ReadyToSubmit,
-  int Incomplete,
-  int ExpiringSoon
-);
+public sealed record ApiErrorDto(string Code, string Message);
+
+public sealed record ReadinessSummaryDto(int ReadyToSubmit, int Incomplete, int ExpiringSoon);
 
 public sealed record ApplicationListItemDto(
   string Id,
@@ -23,7 +21,7 @@ public sealed record ApplicationListResponseDto(
   IReadOnlyList<ApplicationListItemDto> Items,
   ReadinessSummaryDto StatusCounts,
   int EvaluationErrorCount,
-  DateOnly ConfiguredEvaluationDate
+  string ConfiguredEvaluationDate
 );
 
 public sealed record RequirementEvaluationDto(
@@ -34,7 +32,7 @@ public sealed record RequirementEvaluationDto(
   string? Reason,
   string? RequiredAction,
   string? DocumentId,
-  DateOnly? ExpiresOn,
+  string? ExpiresOn,
   int? DaysUntilExpiration
 );
 
@@ -43,9 +41,9 @@ public sealed record PayerEvaluationDto(
   string PayerName,
   string? Status,
   string? RuleVersionId,
-  DateOnly? EffectiveFrom,
-  DateOnly? EffectiveTo,
-  IReadOnlyList<string> EvaluationErrors,
+  string? EffectiveFrom,
+  string? EffectiveTo,
+  IReadOnlyList<ApiErrorDto> EvaluationErrors,
   IReadOnlyList<RequirementEvaluationDto> Requirements,
   int BlockingDeficiencyCount,
   int ExpirationWarningCount
@@ -57,34 +55,37 @@ public sealed record ApplicationEvaluationDto(
   string ProviderName,
   string ApplicationType,
   bool IsActive,
-  DateOnly? SubmittedOn,
+  string? SubmittedOn,
   DateTime LastUpdated,
   string? OverallStatus,
-  DateOnly EvaluationDate,
+  string EvaluationDate,
   string EvaluationDateSource,
-  IReadOnlyList<string> EvaluationErrors,
+  IReadOnlyList<ApiErrorDto> EvaluationErrors,
   IReadOnlyList<PayerEvaluationDto> Payers
 );
 
-public sealed class ApplicationsQueryDto
+public sealed record ApplicationsQueryDto(
+  string? Status,
+  string? PayerId,
+  string? ApplicationType,
+  string? Search,
+  string? SortBy,
+  string? SortDirection
+);
+
+public static class IsoDate
 {
-  [FromQuery(Name = "status")]
-  public string? Status { get; init; }
+  public static string FormatDateOnly(DateOnly date) => date.ToString("yyyy-MM-dd");
+  public static string? FormatDateOnly(DateOnly? date) => date is null ? null : date.Value.ToString("yyyy-MM-dd");
 
-  [FromQuery(Name = "payerId")]
-  public string? PayerId { get; init; }
+  public static bool TryParseDateOnly(string? input, out DateOnly date)
+  {
+    if (string.IsNullOrWhiteSpace(input))
+    {
+      date = default;
+      return false;
+    }
 
-  [FromQuery(Name = "applicationType")]
-  public string? ApplicationType { get; init; }
-
-  [FromQuery(Name = "search")]
-  public string? Search { get; init; }
-
-  [FromQuery(Name = "sortBy")]
-  public string? SortBy { get; init; }
-
-  [FromQuery(Name = "sortDirection")]
-  public string? SortDirection { get; init; }
+    return DateOnly.TryParseExact(input, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date);
+  }
 }
-
-public sealed record ApiErrorDto(string Code, string Message);
