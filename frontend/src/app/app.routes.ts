@@ -13,10 +13,13 @@ export const routes: Routes = [
         .then(m => m.ApplicationListComponent)
   },
   {
+    path: 'applications/:id',
+    loadComponent: () =>
+      import('./features/applications/pages/application-detail/application-detail.component')
+        .then(m => m.ApplicationDetailComponent)
+  },
+  {
     path: '**',
     redirectTo: 'applications'
   }
 ];
-```
-
----
