@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="page-header">
+    <h2>Active Application Work Queue</h2>
+    <p class="text-muted text-small" *ngIf="response()">
+      Evaluation Date: {{ response()!.configuredEvaluationDate }}
+    </p>
+  </div>
+
+  <app-readiness-summary
+    *ngIf="response()"
+    [statusCounts]="response()!.statusCounts"
+    [evaluationErrorCount]="response()!.evaluationErrorCount">
+  </app-readiness-summary>
+
+  <div class="card">
+    <app-application-filters
+      [currentQuery]="query()"
+      (queryChange)="onQueryChange($event)">
+    </app-application-filters>
+
+    <div class="table-container">
+      <div *ngIf="loading()" class="loading">
+        Loading applications...
+      </div>
+
+      <div *ngIf="error()" class="error">
+        {{ error() }}
+      </div>
+
+      <div *ngIf="!loading() && !error() && response() && response()!.items.length === 0" class="empty-state">
+        <p><strong>No applications found</strong></p>
+        <p>Try adjusting your filters or search criteria.</p>
+      </div>
+
+      <table *ngIf="!loading() && !error() && response() && response()!.items.length > 0">
+        <thead>
+          <tr>
+            <th>Provider Name</th>
+            <th>Application ID</th>
+            <th>Type</th>
+            <th>Payers</th>
+            <th>Overall Status</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let app of response()!.items" 
+              (click)="onApplicationClick(app)"
+              class="clickable-row">
+            <td>{{ app.providerName }}</td>
+            <td class="text-small text-muted">{{ app.id }}</td>
+            <td>
+              <span class="application-type">
+                {{ app.applicationType === 'NEW_ENROLLMENT' ? 'New Enrollment' : 'Re-Credentialing' }}
+              </span>
+            </td>
+            <td>{{ app.payerCount }}</td>
+            <td>
+              <app-readiness-badge 
+                [status]="app.overallStatus"
+                type="readiness">
+              </app-readiness-badge>
+              <span *ngIf="app.hasEvaluationErrors" class="error-indicator" title="Has evaluation errors">
+                ⚠️
+              </span>
+            </td>
+            <td class="text-small">{{ app.lastUpdated | date: 'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+```
+
+---
