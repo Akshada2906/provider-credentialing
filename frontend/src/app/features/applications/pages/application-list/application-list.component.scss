@@ -1,0 +1,45 @@
+.page-header {
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.table-container {
+  margin-top: 1.5rem;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.clickable-row:hover {
+  background-color: #f0f8ff !important;
+}
+
+.application-type {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.error-indicator {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  cursor: help;
+}
+
+table {
+  margin-top: 0;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 10;
+}
+```
+
+---
