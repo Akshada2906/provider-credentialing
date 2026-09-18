@@ -1,599 +1,346 @@
 [
   {
-    "payerId": "PAYER-001",
-    "payerName": "Demo Payer 001",
+    "ruleVersionId": "AETNA-NE-v1",
+    "payerId": "AETNA",
+    "payerName": "Aetna Health",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-001-NE-V2",
-    "effectiveFrom": "2026-09-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_W9", "label": "W-9 Form", "requiresExpiration": false, "requiredAction": "Upload W-9." },
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "NPI", "label": "National Provider Identifier (NPI)", "requiredAction": "Enter NPI." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
   {
-    "payerId": "PAYER-001",
-    "payerName": "Demo Payer 001",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-001-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": "2026-09-01",
-    "requiredDocuments": [
-      { "key": "DOC_W9", "label": "W-9 Form", "requiresExpiration": false, "requiredAction": "Upload W-9." },
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "NPI", "label": "National Provider Identifier (NPI)", "requiredAction": "Enter NPI." }
-    ]
-  },
-  {
-    "payerId": "PAYER-001",
-    "payerName": "Demo Payer 001",
+    "ruleVersionId": "AETNA-RC-v1",
+    "payerId": "AETNA",
+    "payerName": "Aetna Health",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-001-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "NPI", "label": "National Provider Identifier (NPI)", "requiredAction": "Enter NPI." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-002",
-    "payerName": "Demo Payer 002",
+    "ruleVersionId": "BCBS-NE-v1",
+    "payerId": "BCBS",
+    "payerName": "Blue Cross Blue Shield",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-002-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "cv", "label": "Curriculum Vitae", "documentId": "CV", "requiresExpirationDate": false }
     ],
     "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "group_npi", "label": "Group NPI", "fieldKey": "groupNpi" }
     ]
   },
   {
-    "payerId": "PAYER-002",
-    "payerName": "Demo Payer 002",
+    "ruleVersionId": "BCBS-RC-v1",
+    "payerId": "BCBS",
+    "payerName": "Blue Cross Blue Shield",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-002-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-003",
-    "payerName": "Demo Payer 003",
+    "ruleVersionId": "CIGNA-NE-v1",
+    "payerId": "CIGNA",
+    "payerName": "Cigna Healthcare",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-003-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
   {
-    "payerId": "PAYER-003",
-    "payerName": "Demo Payer 003",
+    "ruleVersionId": "CIGNA-RC-v1",
+    "payerId": "CIGNA",
+    "payerName": "Cigna Healthcare",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-003-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-004",
-    "payerName": "Demo Payer 004",
+    "ruleVersionId": "HUMANA-NE-v1",
+    "payerId": "HUMANA",
+    "payerName": "Humana Inc",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-004-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "taxonomy_code", "label": "Taxonomy Code", "fieldKey": "taxonomyCode" }
     ]
   },
   {
-    "payerId": "PAYER-004",
-    "payerName": "Demo Payer 004",
+    "ruleVersionId": "HUMANA-RC-v1",
+    "payerId": "HUMANA",
+    "payerName": "Humana Inc",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-004-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-005",
-    "payerName": "Demo Payer 005",
+    "ruleVersionId": "UHC-NE-v1",
+    "payerId": "UHC",
+    "payerName": "UnitedHealthcare",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-005-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_CAQH", "label": "CAQH Attestation", "requiresExpiration": false, "requiredAction": "Upload CAQH." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "cv", "label": "Curriculum Vitae", "documentId": "CV", "requiresExpirationDate": false },
+      { "key": "references", "label": "Professional References", "documentId": "REFERENCES", "requiresExpirationDate": false }
     ],
     "requiredFields": [
-      { "key": "PRACTICE_ADDRESS", "label": "Practice Address", "requiredAction": "Enter practice address." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "group_npi", "label": "Group NPI", "fieldKey": "groupNpi" },
+      { "key": "taxonomy_code", "label": "Taxonomy Code", "fieldKey": "taxonomyCode" }
     ]
   },
   {
-    "payerId": "PAYER-005",
-    "payerName": "Demo Payer 005",
+    "ruleVersionId": "UHC-RC-v1",
+    "payerId": "UHC",
+    "payerName": "UnitedHealthcare",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-005-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_CAQH", "label": "CAQH Attestation", "requiresExpiration": false, "requiredAction": "Upload CAQH." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "PRACTICE_ADDRESS", "label": "Practice Address", "requiredAction": "Enter practice address." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-006",
-    "payerName": "Demo Payer 006",
+    "ruleVersionId": "MEDICARE-NE-v1",
+    "payerId": "MEDICARE",
+    "payerName": "Medicare",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-006-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_ID", "label": "Government ID", "requiresExpiration": true, "requiredAction": "Provide ID." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "tax_id", "label": "Tax ID Documentation", "documentId": "TAX_ID", "requiresExpirationDate": false }
     ],
     "requiredFields": [
-      { "key": "SSN_LAST4", "label": "SSN Last 4", "requiredAction": "Enter last 4 of SSN." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "taxonomy_code", "label": "Taxonomy Code", "fieldKey": "taxonomyCode" }
     ]
   },
   {
-    "payerId": "PAYER-006",
-    "payerName": "Demo Payer 006",
+    "ruleVersionId": "MEDICARE-RC-v1",
+    "payerId": "MEDICARE",
+    "payerName": "Medicare",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-006-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_ID", "label": "Government ID", "requiresExpiration": true, "requiredAction": "Provide ID." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "SSN_LAST4", "label": "SSN Last 4", "requiredAction": "Enter last 4 of SSN." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-007",
-    "payerName": "Demo Payer 007",
+    "ruleVersionId": "MEDICAID-NE-v1",
+    "payerId": "MEDICAID",
+    "payerName": "Medicaid",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-007-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." },
-      { "key": "DOC_DEA", "label": "DEA Certificate", "requiresExpiration": true, "requiredAction": "Provide DEA certificate." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
   {
-    "payerId": "PAYER-007",
-    "payerName": "Demo Payer 007",
+    "ruleVersionId": "MEDICAID-RC-v1",
+    "payerId": "MEDICAID",
+    "payerName": "Medicaid",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-007-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." },
-      { "key": "DOC_DEA", "label": "DEA Certificate", "requiresExpiration": true, "requiredAction": "Provide DEA certificate." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-008",
-    "payerName": "Demo Payer 008",
+    "ruleVersionId": "ANTHEM-NE-v1",
+    "payerId": "ANTHEM",
+    "payerName": "Anthem Inc",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-008-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "BOARD_CERT", "label": "Board Certification", "requiredAction": "Enter board certification." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
   {
-    "payerId": "PAYER-008",
-    "payerName": "Demo Payer 008",
+    "ruleVersionId": "ANTHEM-RC-v1",
+    "payerId": "ANTHEM",
+    "payerName": "Anthem Inc",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-008-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "BOARD_CERT", "label": "Board Certification", "requiredAction": "Enter board certification." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-009",
-    "payerName": "Demo Payer 009",
+    "ruleVersionId": "KAISER-NE-v1",
+    "payerId": "KAISER",
+    "payerName": "Kaiser Permanente",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-009-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true },
+      { "key": "cv", "label": "Curriculum Vitae", "documentId": "CV", "requiresExpirationDate": false }
     ],
     "requiredFields": [
-      { "key": "PRACTICE_PHONE", "label": "Practice Phone", "requiredAction": "Enter phone." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
   {
-    "payerId": "PAYER-009",
-    "payerName": "Demo Payer 009",
+    "ruleVersionId": "KAISER-RC-v1",
+    "payerId": "KAISER",
+    "payerName": "Kaiser Permanente",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-009-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "PRACTICE_PHONE", "label": "Practice Phone", "requiredAction": "Enter phone." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
-
   {
-    "payerId": "PAYER-010",
-    "payerName": "Demo Payer 010",
+    "ruleVersionId": "CVSHLT-NE-v1",
+    "payerId": "CVSHLT",
+    "payerName": "CVS Health / Aetna",
     "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-010-NE-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_W9", "label": "W-9 Form", "requiresExpiration": false, "requiredAction": "Upload W-9." }
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "EMAIL", "label": "Email", "requiredAction": "Enter email." }
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   },
   {
-    "payerId": "PAYER-010",
-    "payerName": "Demo Payer 010",
+    "ruleVersionId": "CVSHLT-RC-v1",
+    "payerId": "CVSHLT",
+    "payerName": "CVS Health / Aetna",
     "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-010-RC-V1",
-    "effectiveFrom": "2026-01-01",
+    "effectiveFrom": "2020-01-01",
     "effectiveTo": null,
     "requiredDocuments": [
-      { "key": "DOC_W9", "label": "W-9 Form", "requiresExpiration": false, "requiredAction": "Upload W-9." }
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
     ],
     "requiredFields": [
-      { "key": "EMAIL", "label": "Email", "requiredAction": "Enter email." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-011",
-    "payerName": "Demo Payer 011",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-011-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
-    ]
-  },
-  {
-    "payerId": "PAYER-011",
-    "payerName": "Demo Payer 011",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-011-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-012",
-    "payerName": "Demo Payer 012",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-012-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
-    ],
-    "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
-    ]
-  },
-  {
-    "payerId": "PAYER-012",
-    "payerName": "Demo Payer 012",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-012-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
-    ],
-    "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-013",
-    "payerName": "Demo Payer 013",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-013-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
-    ],
-    "requiredFields": [
-      { "key": "PRACTICE_ADDRESS", "label": "Practice Address", "requiredAction": "Enter practice address." }
-    ]
-  },
-  {
-    "payerId": "PAYER-013",
-    "payerName": "Demo Payer 013",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-013-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
-    ],
-    "requiredFields": [
-      { "key": "PRACTICE_ADDRESS", "label": "Practice Address", "requiredAction": "Enter practice address." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-014",
-    "payerName": "Demo Payer 014",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-014-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_ID", "label": "Government ID", "requiresExpiration": true, "requiredAction": "Provide ID." }
-    ],
-    "requiredFields": [
-      { "key": "EMAIL", "label": "Email", "requiredAction": "Enter email." }
-    ]
-  },
-  {
-    "payerId": "PAYER-014",
-    "payerName": "Demo Payer 014",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-014-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_ID", "label": "Government ID", "requiresExpiration": true, "requiredAction": "Provide ID." }
-    ],
-    "requiredFields": [
-      { "key": "EMAIL", "label": "Email", "requiredAction": "Enter email." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-015",
-    "payerName": "Demo Payer 015",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-015-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "BOARD_CERT", "label": "Board Certification", "requiredAction": "Enter board certification." }
-    ]
-  },
-  {
-    "payerId": "PAYER-015",
-    "payerName": "Demo Payer 015",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-015-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "BOARD_CERT", "label": "Board Certification", "requiredAction": "Enter board certification." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-016",
-    "payerName": "Demo Payer 016",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-016-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
-    ],
-    "requiredFields": [
-      { "key": "PRACTICE_PHONE", "label": "Practice Phone", "requiredAction": "Enter phone." }
-    ]
-  },
-  {
-    "payerId": "PAYER-016",
-    "payerName": "Demo Payer 016",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-016-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_CV", "label": "Curriculum Vitae", "requiresExpiration": false, "requiredAction": "Upload CV." }
-    ],
-    "requiredFields": [
-      { "key": "PRACTICE_PHONE", "label": "Practice Phone", "requiredAction": "Enter phone." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-017",
-    "payerName": "Demo Payer 017",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-017-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_W9", "label": "W-9 Form", "requiresExpiration": false, "requiredAction": "Upload W-9." }
-    ],
-    "requiredFields": [
-      { "key": "PRACTICE_ADDRESS", "label": "Practice Address", "requiredAction": "Enter practice address." }
-    ]
-  },
-  {
-    "payerId": "PAYER-017",
-    "payerName": "Demo Payer 017",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-017-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_W9", "label": "W-9 Form", "requiresExpiration": false, "requiredAction": "Upload W-9." }
-    ],
-    "requiredFields": [
-      { "key": "PRACTICE_ADDRESS", "label": "Practice Address", "requiredAction": "Enter practice address." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-018",
-    "payerName": "Demo Payer 018",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-018-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "EMAIL", "label": "Email", "requiredAction": "Enter email." }
-    ]
-  },
-  {
-    "payerId": "PAYER-018",
-    "payerName": "Demo Payer 018",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-018-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_LICENSE", "label": "State License", "requiresExpiration": true, "requiredAction": "Provide current license." }
-    ],
-    "requiredFields": [
-      { "key": "EMAIL", "label": "Email", "requiredAction": "Enter email." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-019",
-    "payerName": "Demo Payer 019",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-019-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_ID", "label": "Government ID", "requiresExpiration": true, "requiredAction": "Provide ID." }
-    ],
-    "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
-    ]
-  },
-  {
-    "payerId": "PAYER-019",
-    "payerName": "Demo Payer 019",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-019-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_ID", "label": "Government ID", "requiresExpiration": true, "requiredAction": "Provide ID." }
-    ],
-    "requiredFields": [
-      { "key": "TAX_ID", "label": "Tax ID", "requiredAction": "Enter Tax ID." }
-    ]
-  },
-
-  {
-    "payerId": "PAYER-020",
-    "payerName": "Demo Payer 020",
-    "applicationType": "NEW_ENROLLMENT",
-    "ruleVersionId": "PAYER-020-NE-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
-    ],
-    "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
-    ]
-  },
-  {
-    "payerId": "PAYER-020",
-    "payerName": "Demo Payer 020",
-    "applicationType": "RE_CREDENTIALING",
-    "ruleVersionId": "PAYER-020-RC-V1",
-    "effectiveFrom": "2026-01-01",
-    "effectiveTo": null,
-    "requiredDocuments": [
-      { "key": "DOC_MALPRACTICE", "label": "Malpractice Insurance", "requiresExpiration": true, "requiredAction": "Provide malpractice insurance." }
-    ],
-    "requiredFields": [
-      { "key": "NPI", "label": "NPI", "requiredAction": "Enter NPI." }
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
     ]
   }
 ]

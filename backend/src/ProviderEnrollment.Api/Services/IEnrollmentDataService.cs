@@ -4,10 +4,11 @@ namespace ProviderEnrollment.Api.Services;
 
 public interface IEnrollmentDataService
 {
+  ReadinessConfig Config { get; }
   IReadOnlyList<EnrollmentApplication> Applications { get; }
   IReadOnlyList<PayerRuleVersion> RuleVersions { get; }
-  ReadinessConfig Config { get; }
-  DateOnly ConfiguredEvaluationDate { get; }
 
-  EnrollmentApplication? FindApplication(string id);
+  EnrollmentApplication? FindApplicationById(string id);
+
+  bool IsKnownPayerId(string payerId);
 }

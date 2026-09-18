@@ -8,37 +8,63 @@ namespace ProviderEnrollment.Api.Controllers;
 [Route("api/v1/[controller]")]
 public sealed class ApplicationsController : ControllerBase
 {
-  private readonly IEnrollmentDataService _data;
-  private readonly IReadinessEvaluationService _evaluation;
+  private static readonly HashSet<string> AllowedStatuses = new(StringComparer.Ordinal)
+  {
+    ReadinessStatuses.Payer.ReadyToSubmit,
+    ReadinessStatuses.Payer.Incomplete,
+    ReadinessStatuses.Payer.ExpiringSoon
+  };
 
-  public ApplicationsController(IEnrollmentDataService data, IReadinessEvaluationService evaluation)
+  private static readonly HashSet<string> AllowedApplicationTypes = new(StringComparer.Ordinal)
+  {
+    "NEW_ENROLLMENT",
+    "RE_CREDENTIALING"
+  };
+
+  private static readonly HashSet<string> AllowedSortBy = new(StringComparer.Ordinal)
+  {
+    "providerName",
+    "lastUpdated",
+    "readiness"
+  };
+
+  private static readonly HashSet<string> AllowedSortDirection = new(StringComparer.OrdinalIgnoreCase)
+  {
+    "asc",
+    "desc"
+  };
+
+  private readonly IEnrollmentDataService _data;
+  private readonly IReadinessEvaluationService _eval;
+
+  public ApplicationsController(IEnrollmentDataService data, IReadinessEvaluationService eval)
   {
     _data = data;
-    _evaluation = evaluation;
+    _eval = eval;
   }
 
   [HttpGet]
-  public ActionResult<ApplicationListResponseDto> GetApplications([FromQuery] ApplicationsQueryDto query)
+  public ActionResult<ApplicationListResponseDto> Get([FromQuery] ApplicationsQueryDto query)
   {
-    var validationError = ValidateQuery(query);
-    if (validationError is not null)
-      return BadRequest(validationError);
+    ValidateQuery(query);
+
+    var configuredEvalDate = _data.Config.FixedEvaluationDate;
+    var configuredDateString = configuredEvalDate ?? DateOnly.FromDateTime(DateTime.UtcNow).ToString("yyyy-MM-dd");
 
     var activeApps = _data.Applications.Where(a => a.IsActive).ToList();
+    var evaluated = activeApps.Select(a => _eval.Evaluate(a)).ToList();
 
-    // Evaluate active apps (for counts across all active apps before filtering)
-    var evaluations = activeApps.Select(a => _evaluation.Evaluate(a)).ToList();
+    var fullyEvaluated = evaluated.Where(e => e.OverallStatus is not null).ToList();
 
-    var fullyEvaluated = evaluations.Where(e => e.OverallStatus is not null).ToList();
-    var statusCounts = new ReadinessSummaryDto(
-      ReadyToSubmit: fullyEvaluated.Count(e => e.OverallStatus == ReadinessStatuses.Payer.ReadyToSubmit),
-      Incomplete: fullyEvaluated.Count(e => e.OverallStatus == ReadinessStatuses.Payer.Incomplete),
-      ExpiringSoon: fullyEvaluated.Count(e => e.OverallStatus == ReadinessStatuses.Payer.ExpiringSoon)
+    var counts = new ReadinessSummaryDto(
+      fullyEvaluated.Count(e => e.OverallStatus == ReadinessStatuses.Payer.ReadyToSubmit),
+      fullyEvaluated.Count(e => e.OverallStatus == ReadinessStatuses.Payer.Incomplete),
+      fullyEvaluated.Count(e => e.OverallStatus == ReadinessStatuses.Payer.ExpiringSoon)
     );
-    var evaluationErrorCount = evaluations.Count(e => e.OverallStatus is null);
 
-    // Apply filters to items
-    IEnumerable<ApplicationEvaluationDto> filtered = evaluations;
+    var evaluationErrorCount = evaluated.Count(e => e.EvaluationErrors.Count > 0 || e.OverallStatus is null);
+
+    IEnumerable<ApplicationEvaluationDto> filtered = fullyEvaluated;
 
     if (!string.IsNullOrWhiteSpace(query.Status))
     {
@@ -52,112 +78,105 @@ public sealed class ApplicationsController : ControllerBase
 
     if (!string.IsNullOrWhiteSpace(query.ApplicationType))
     {
-      filtered = filtered.Where(e => string.Equals(e.ApplicationType, query.ApplicationType, StringComparison.OrdinalIgnoreCase));
+      filtered = filtered.Where(e => e.ApplicationType == query.ApplicationType);
     }
 
     if (!string.IsNullOrWhiteSpace(query.Search))
     {
-      var term = query.Search.Trim();
+      var needle = query.Search.Trim();
       filtered = filtered.Where(e =>
-        e.ProviderName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
-        e.Id.Contains(term, StringComparison.OrdinalIgnoreCase));
+        e.ProviderName.Contains(needle, StringComparison.OrdinalIgnoreCase) ||
+        e.Id.Contains(needle, StringComparison.OrdinalIgnoreCase));
     }
 
-    // Map to list items
+    filtered = ApplySorting(filtered, query.SortBy, query.SortDirection);
+
     var items = filtered.Select(e => new ApplicationListItemDto(
-      Id: e.Id,
-      ProviderId: e.ProviderId,
-      ProviderName: e.ProviderName,
-      ApplicationType: e.ApplicationType,
-      OverallStatus: e.OverallStatus,
-      LastUpdated: e.LastUpdated,
-      PayerCount: e.Payers.Count,
-      HasEvaluationErrors: e.OverallStatus is null
+      e.Id,
+      e.ProviderId,
+      e.ProviderName,
+      e.ApplicationType,
+      e.OverallStatus,
+      e.LastUpdated,
+      e.Payers.Count,
+      e.EvaluationErrors.Count > 0 || e.Payers.Any(p => p.Status is null)
     )).ToList();
 
-    // Sorting
-    items = ApplySort(items, query.SortBy, query.SortDirection);
-
-    var response = new ApplicationListResponseDto(
-      Items: items,
-      StatusCounts: statusCounts,
-      EvaluationErrorCount: evaluationErrorCount,
-      ConfiguredEvaluationDate: _data.ConfiguredEvaluationDate
-    );
-
-    return Ok(response);
+    return Ok(new ApplicationListResponseDto(items, counts, evaluationErrorCount, configuredDateString));
   }
 
   [HttpGet("{id}")]
-  public ActionResult<ApplicationEvaluationDto> GetApplicationById([FromRoute] string id)
+  public ActionResult<ApplicationEvaluationDto> GetById([FromRoute] string id)
   {
-    var app = _data.FindApplication(id);
+    if (string.IsNullOrWhiteSpace(id))
+    {
+      throw new BadRequestException("ID is required.");
+    }
+
+    var app = _data.FindApplicationById(id);
     if (app is null)
-      return NotFound(new ApiErrorDto("NOT_FOUND", "Application not found."));
-
-    var eval = _evaluation.Evaluate(app);
-    return Ok(eval);
-  }
-
-  private static ApiErrorDto? ValidateQuery(ApplicationsQueryDto query)
-  {
-    if (!string.IsNullOrWhiteSpace(query.Status) && !ReadinessStatuses.Payer.All.Contains(query.Status))
-      return new ApiErrorDto("INVALID_QUERY", "Invalid 'status' query parameter.");
-
-    if (!string.IsNullOrWhiteSpace(query.ApplicationType) &&
-        !string.Equals(query.ApplicationType, "NEW_ENROLLMENT", StringComparison.OrdinalIgnoreCase) &&
-        !string.Equals(query.ApplicationType, "RE_CREDENTIALING", StringComparison.OrdinalIgnoreCase))
-      return new ApiErrorDto("INVALID_QUERY", "Invalid 'applicationType' query parameter.");
-
-    if (!string.IsNullOrWhiteSpace(query.SortBy) &&
-        !string.Equals(query.SortBy, "providerName", StringComparison.OrdinalIgnoreCase) &&
-        !string.Equals(query.SortBy, "lastUpdated", StringComparison.OrdinalIgnoreCase) &&
-        !string.Equals(query.SortBy, "readiness", StringComparison.OrdinalIgnoreCase))
-      return new ApiErrorDto("INVALID_QUERY", "Invalid 'sortBy' query parameter.");
-
-    if (!string.IsNullOrWhiteSpace(query.SortDirection) &&
-        !string.Equals(query.SortDirection, "asc", StringComparison.OrdinalIgnoreCase) &&
-        !string.Equals(query.SortDirection, "desc", StringComparison.OrdinalIgnoreCase))
-      return new ApiErrorDto("INVALID_QUERY", "Invalid 'sortDirection' query parameter.");
-
-    return null;
-  }
-
-  private static List<ApplicationListItemDto> ApplySort(
-    List<ApplicationListItemDto> items,
-    string? sortBy,
-    string? sortDirection)
-  {
-    var desc = string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase);
-
-    IOrderedEnumerable<ApplicationListItemDto> ordered = (sortBy ?? "providerName").ToLowerInvariant() switch
     {
-      "lastupdated" => desc
-        ? items.OrderByDescending(i => i.LastUpdated)
-        : items.OrderBy(i => i.LastUpdated),
+      throw new NotFoundException();
+    }
 
-      "readiness" => desc
-        ? items.OrderByDescending(i => ReadinessRank(i.OverallStatus)).ThenBy(i => i.ProviderName)
-        : items.OrderBy(i => ReadinessRank(i.OverallStatus)).ThenBy(i => i.ProviderName),
+    return Ok(_eval.Evaluate(app));
+  }
 
-      _ => desc
-        ? items.OrderByDescending(i => i.ProviderName)
-        : items.OrderBy(i => i.ProviderName)
+  private static IEnumerable<ApplicationEvaluationDto> ApplySorting(IEnumerable<ApplicationEvaluationDto> src, string? sortBy, string? sortDirection)
+  {
+    var dir = (sortDirection ?? "asc").ToLowerInvariant();
+
+    if (string.IsNullOrWhiteSpace(sortBy))
+    {
+      // Default: lastUpdated desc
+      return src.OrderByDescending(x => x.LastUpdated);
+    }
+
+    var asc = dir == "asc";
+
+    return sortBy switch
+    {
+      "providerName" => asc ? src.OrderBy(x => x.ProviderName) : src.OrderByDescending(x => x.ProviderName),
+      "lastUpdated" => asc ? src.OrderBy(x => x.LastUpdated) : src.OrderByDescending(x => x.LastUpdated),
+      "readiness" => asc ? src.OrderBy(x => SortKeyForReadiness(x.OverallStatus!)) : src.OrderByDescending(x => SortKeyForReadiness(x.OverallStatus!)),
+      _ => src.OrderByDescending(x => x.LastUpdated)
     };
 
-    return ordered.ToList();
+    static int SortKeyForReadiness(string status) =>
+      status switch
+      {
+        ReadinessStatuses.Payer.Incomplete => 0,
+        ReadinessStatuses.Payer.ExpiringSoon => 1,
+        ReadinessStatuses.Payer.ReadyToSubmit => 2,
+        _ => 3
+      };
   }
 
-  private static int ReadinessRank(string? status)
+  private void ValidateQuery(ApplicationsQueryDto query)
   {
-    // Sorting by readiness: Incomplete (worst) first, then Expiring Soon, then Ready to Submit, then errors last
-    return status switch
+    if (!string.IsNullOrWhiteSpace(query.Status) && !AllowedStatuses.Contains(query.Status))
     {
-      ReadinessStatuses.Payer.Incomplete => 0,
-      ReadinessStatuses.Payer.ExpiringSoon => 1,
-      ReadinessStatuses.Payer.ReadyToSubmit => 2,
-      null => 3,
-      _ => 4
-    };
+      throw new BadRequestException("Invalid status filter.");
+    }
+
+    if (!string.IsNullOrWhiteSpace(query.ApplicationType) && !AllowedApplicationTypes.Contains(query.ApplicationType))
+    {
+      throw new BadRequestException("Invalid applicationType.");
+    }
+
+    if (!string.IsNullOrWhiteSpace(query.PayerId) && !_data.IsKnownPayerId(query.PayerId))
+    {
+      throw new BadRequestException("Invalid payerId.");
+    }
+
+    if (!string.IsNullOrWhiteSpace(query.SortBy) && !AllowedSortBy.Contains(query.SortBy))
+    {
+      throw new BadRequestException("Invalid sortBy.");
+    }
+
+    if (!string.IsNullOrWhiteSpace(query.SortDirection) && !AllowedSortDirection.Contains(query.SortDirection))
+    {
+      throw new BadRequestException("Invalid sortDirection.");
+    }
   }
 }

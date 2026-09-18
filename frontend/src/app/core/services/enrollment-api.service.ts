@@ -14,7 +14,7 @@ import {
 export class EnrollmentApiService {
   private readonly baseUrl = API_CONFIG.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Retrieves the active application work queue with optional filtering, searching, and sorting.

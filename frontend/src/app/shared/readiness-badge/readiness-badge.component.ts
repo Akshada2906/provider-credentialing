@@ -37,6 +37,3 @@ export class ReadinessBadgeComponent {
     return this.status;
   }
 }
-```
-
----
