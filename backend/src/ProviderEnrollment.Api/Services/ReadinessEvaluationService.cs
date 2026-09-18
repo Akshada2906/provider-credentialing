@@ -14,24 +14,31 @@ public sealed class ReadinessEvaluationService : IReadinessEvaluationService
 
   public ApplicationEvaluationDto Evaluate(EnrollmentApplication application)
   {
-    var (evaluationDate, evaluationDateSource) = ResolveEvaluationDate(application, _data.Config);
+    var appErrors = new List<ApiErrorDto>();
 
-    var appErrors = new List<string>();
-    var payerEvals = new List<PayerEvaluationDto>();
+    var (evaluationDate, source) = ResolveEvaluationDate(application);
+    var configuredDate = ResolveConfiguredDate();
 
-    foreach (var target in application.TargetPayers)
+    // Evaluate each payer independently
+    var payers = new List<PayerEvaluationDto>();
+    var anyPayerError = false;
+
+    foreach (var payerId in application.TargetPayerIds)
     {
-      payerEvals.Add(EvaluatePayer(application, target.PayerId, evaluationDate, appErrors));
+      var payerEval = EvaluatePayer(application, payerId, evaluationDate, configuredDate);
+      payers.Add(payerEval);
+
+      if (payerEval.Status is null)
+      {
+        anyPayerError = true;
+        appErrors.Add(new ApiErrorDto("PAYER_EVALUATION_FAILED", $"Payer {payerId} could not be evaluated."));
+      }
     }
 
-    var overallStatus = ReadinessStatuses.CombineOverall(payerEvals.Select(p => p.Status).ToArray());
-
-    // If any payer couldn't be evaluated, application has evaluation error and overallStatus must be null
-    if (payerEvals.Any(p => p.Status is null))
+    string? overall = null;
+    if (!anyPayerError)
     {
-      if (!appErrors.Any())
-        appErrors.Add("One or more payers could not be evaluated.");
-      overallStatus = null;
+      overall = AggregateOverallStatus(payers.Select(p => p.Status!).ToList());
     }
 
     return new ApplicationEvaluationDto(
@@ -42,38 +49,72 @@ public sealed class ReadinessEvaluationService : IReadinessEvaluationService
       application.IsActive,
       application.SubmittedOn,
       application.LastUpdated,
-      overallStatus,
-      evaluationDate,
-      evaluationDateSource,
+      overall,
+      IsoDate.FormatDateOnly(evaluationDate),
+      source,
       appErrors,
-      payerEvals
+      payers
     );
   }
 
-  private PayerEvaluationDto EvaluatePayer(
-    EnrollmentApplication application,
-    string payerId,
-    DateOnly evaluationDate,
-    List<string> applicationErrorsCollector)
+  private (DateOnly date, string source) ResolveEvaluationDate(EnrollmentApplication application)
   {
-    var errors = new List<string>();
-
-    var matching = SelectRuleVersion(payerId, application.ApplicationType, evaluationDate);
-    if (matching is null)
+    if (IsoDate.TryParseDateOnly(application.SubmittedOn, out var submitted))
     {
-      errors.Add("No matching payer rule version found for the evaluation date.");
-      applicationErrorsCollector.Add($"Payer '{payerId}' could not be evaluated.");
+      return (submitted, ReadinessStatuses.EvaluationDateSource.SubmittedOn);
+    }
+
+    if (IsoDate.TryParseDateOnly(_data.Config.FixedEvaluationDate, out var fixedDate))
+    {
+      return (fixedDate, ReadinessStatuses.EvaluationDateSource.Configured);
+    }
+
+    return (DateOnly.FromDateTime(DateTime.UtcNow), ReadinessStatuses.EvaluationDateSource.UtcNow);
+  }
+
+  private DateOnly ResolveConfiguredDate()
+  {
+    if (IsoDate.TryParseDateOnly(_data.Config.FixedEvaluationDate, out var d))
+    {
+      return d;
+    }
+
+    return DateOnly.FromDateTime(DateTime.UtcNow);
+  }
+
+  private PayerEvaluationDto EvaluatePayer(EnrollmentApplication app, string payerId, DateOnly evaluationDate, DateOnly configuredDate)
+  {
+    // Validate payer ID against configured payers per contract
+    if (!_data.IsKnownPayerId(payerId))
+    {
       return new PayerEvaluationDto(
         payerId,
-        payerName: ResolvePayerName(payerId),
-        Status: null,
-        RuleVersionId: null,
-        EffectiveFrom: null,
-        EffectiveTo: null,
-        EvaluationErrors: errors,
-        Requirements: Array.Empty<RequirementEvaluationDto>(),
-        BlockingDeficiencyCount: 0,
-        ExpirationWarningCount: 0
+        payerId,
+        null,
+        null,
+        null,
+        null,
+        new[] { new ApiErrorDto("UNKNOWN_PAYER", "Payer ID is not configured.") },
+        Array.Empty<RequirementEvaluationDto>(),
+        0,
+        0
+      );
+    }
+
+    var match = SelectRuleVersion(payerId, app.ApplicationType, evaluationDate);
+    if (match is null)
+    {
+      return new PayerEvaluationDto(
+        payerId,
+        payerId,
+        null,
+        null,
+        null,
+        null,
+        new[] { new ApiErrorDto("NO_EFFECTIVE_RULE", "No effective rule version matched the evaluation date.") },
+        Array.Empty<RequirementEvaluationDto>(),
+        0,
+        0
       );
     }
 
@@ -81,157 +122,134 @@ public sealed class ReadinessEvaluationService : IReadinessEvaluationService
     var blocking = 0;
     var warnings = 0;
 
-    // Documents
-    foreach (var docRule in matching.RequiredDocuments)
+    var docsById = app.Documents.ToDictionary(d => d.DocumentId, StringComparer.OrdinalIgnoreCase);
+
+    foreach (var reqDoc in match.RequiredDocuments)
     {
-      var matchDoc = application.Documents.FirstOrDefault(d => string.Equals(d.Key, docRule.Key, StringComparison.OrdinalIgnoreCase));
-
-      if (matchDoc is null)
+      if (!docsById.TryGetValue(reqDoc.DocumentId, out var doc))
       {
         blocking++;
         requirements.Add(new RequirementEvaluationDto(
-          Key: docRule.Key,
-          Label: docRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Document,
-          Status: ReadinessStatuses.Requirement.Missing,
-          Reason: "Required document is missing.",
-          RequiredAction: docRule.RequiredAction,
-          DocumentId: null,
-          ExpiresOn: null,
-          DaysUntilExpiration: null
+          reqDoc.Key,
+          reqDoc.Label,
+          ReadinessStatuses.RequirementKind.Document,
+          ReadinessStatuses.Requirement.Missing,
+          "Document missing.",
+          "Provide document.",
+          reqDoc.DocumentId,
+          null,
+          null
         ));
         continue;
       }
 
-      if (!docRule.RequiresExpiration)
+      // RequiresExpirationDate governs missing expiresOn behavior
+      if (reqDoc.RequiresExpirationDate)
       {
-        requirements.Add(new RequirementEvaluationDto(
-          Key: docRule.Key,
-          Label: docRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Document,
-          Status: ReadinessStatuses.Requirement.PresentAndValid,
-          Reason: null,
-          RequiredAction: docRule.RequiredAction,
-          DocumentId: matchDoc.DocumentId,
-          ExpiresOn: matchDoc.ExpiresOn,
-          DaysUntilExpiration: null
-        ));
-        continue;
-      }
+        if (!IsoDate.TryParseDateOnly(doc.ExpiresOn, out var exp))
+        {
+          blocking++;
+          requirements.Add(new RequirementEvaluationDto(
+            reqDoc.Key,
+            reqDoc.Label,
+            ReadinessStatuses.RequirementKind.Document,
+            ReadinessStatuses.Requirement.Missing,
+            "Expiration date missing.",
+            "Provide expiration date.",
+            reqDoc.DocumentId,
+            null,
+            null
+          ));
+          continue;
+        }
 
-      if (!matchDoc.ExpiresOn.HasValue)
+        var (status, reason, daysUntil) = EvaluateExpiration(exp, evaluationDate, _data.Config.ExpirationThresholdDays);
+        if (status == ReadinessStatuses.Requirement.Expired || status == ReadinessStatuses.Requirement.Missing)
+        {
+          blocking++;
+        }
+        else if (status == ReadinessStatuses.Requirement.ExpiringSoon)
+        {
+          warnings++;
+        }
+
+        requirements.Add(new RequirementEvaluationDto(
+          reqDoc.Key,
+          reqDoc.Label,
+          ReadinessStatuses.RequirementKind.Document,
+          status,
+          reason,
+          status == ReadinessStatuses.Requirement.Expired ? "Renew document." :
+            status == ReadinessStatuses.Requirement.ExpiringSoon ? "Renew soon." : null,
+          reqDoc.DocumentId,
+          IsoDate.FormatDateOnly(exp),
+          daysUntil
+        ));
+      }
+      else
+      {
+        // Non-expiring document: presence means Present & Valid
+        requirements.Add(new RequirementEvaluationDto(
+          reqDoc.Key,
+          reqDoc.Label,
+          ReadinessStatuses.RequirementKind.Document,
+          ReadinessStatuses.Requirement.PresentAndValid,
+          null,
+          null,
+          reqDoc.DocumentId,
+          null,
+          null
+        ));
+      }
+    }
+
+    foreach (var reqField in match.RequiredFields)
+    {
+      var present = app.Fields.TryGetValue(reqField.FieldKey, out var val) && !IsEmptyJsonPrimitive(val);
+      if (!present)
       {
         blocking++;
         requirements.Add(new RequirementEvaluationDto(
-          Key: docRule.Key,
-          Label: docRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Document,
-          Status: ReadinessStatuses.Requirement.Missing,
-          Reason: "Expiration date missing.",
-          RequiredAction: docRule.RequiredAction,
-          DocumentId: matchDoc.DocumentId,
-          ExpiresOn: null,
-          DaysUntilExpiration: null
-        ));
-        continue;
-      }
-
-      var expiresOn = matchDoc.ExpiresOn.Value;
-      var daysUntil = expiresOn.DayNumber - evaluationDate.DayNumber;
-
-      if (expiresOn < evaluationDate)
-      {
-        blocking++;
-        requirements.Add(new RequirementEvaluationDto(
-          Key: docRule.Key,
-          Label: docRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Document,
-          Status: ReadinessStatuses.Requirement.Expired,
-          Reason: "Document is expired.",
-          RequiredAction: docRule.RequiredAction,
-          DocumentId: matchDoc.DocumentId,
-          ExpiresOn: expiresOn,
-          DaysUntilExpiration: daysUntil
-        ));
-      }
-      else if (daysUntil <= _data.Config.ExpirationThresholdDays)
-      {
-        warnings++;
-        requirements.Add(new RequirementEvaluationDto(
-          Key: docRule.Key,
-          Label: docRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Document,
-          Status: ReadinessStatuses.Requirement.ExpiringSoon,
-          Reason: "Document is within the expiration alert window.",
-          RequiredAction: docRule.RequiredAction,
-          DocumentId: matchDoc.DocumentId,
-          ExpiresOn: expiresOn,
-          DaysUntilExpiration: daysUntil
+          reqField.Key,
+          reqField.Label,
+          ReadinessStatuses.RequirementKind.Field,
+          ReadinessStatuses.Requirement.Missing,
+          "Field missing or empty.",
+          "Provide value.",
+          null,
+          null,
+          null
         ));
       }
       else
       {
         requirements.Add(new RequirementEvaluationDto(
-          Key: docRule.Key,
-          Label: docRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Document,
-          Status: ReadinessStatuses.Requirement.PresentAndValid,
-          Reason: null,
-          RequiredAction: docRule.RequiredAction,
-          DocumentId: matchDoc.DocumentId,
-          ExpiresOn: expiresOn,
-          DaysUntilExpiration: daysUntil
+          reqField.Key,
+          reqField.Label,
+          ReadinessStatuses.RequirementKind.Field,
+          ReadinessStatuses.Requirement.PresentAndValid,
+          null,
+          null,
+          null,
+          null,
+          null
         ));
       }
     }
 
-    // Fields
-    foreach (var fieldRule in matching.RequiredFields)
-    {
-      var hasKey = application.Fields.TryGetValue(fieldRule.Key, out var raw);
-      var isPresent = hasKey && IsNonEmptyPrimitive(raw);
-
-      if (!isPresent)
-      {
-        blocking++;
-        requirements.Add(new RequirementEvaluationDto(
-          Key: fieldRule.Key,
-          Label: fieldRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Field,
-          Status: ReadinessStatuses.Requirement.Missing,
-          Reason: "Required field is missing.",
-          RequiredAction: fieldRule.RequiredAction,
-          DocumentId: null,
-          ExpiresOn: null,
-          DaysUntilExpiration: null
-        ));
-      }
-      else
-      {
-        requirements.Add(new RequirementEvaluationDto(
-          Key: fieldRule.Key,
-          Label: fieldRule.Label,
-          Kind: ReadinessStatuses.RequirementKind.Field,
-          Status: ReadinessStatuses.Requirement.PresentAndValid,
-          Reason: null,
-          RequiredAction: fieldRule.RequiredAction,
-          DocumentId: null,
-          ExpiresOn: null,
-          DaysUntilExpiration: null
-        ));
-      }
-    }
-
-    var payerStatus = ResolvePayerStatus(blocking, warnings);
+    var payerStatus =
+      blocking > 0 ? ReadinessStatuses.Payer.Incomplete :
+      warnings > 0 ? ReadinessStatuses.Payer.ExpiringSoon :
+      ReadinessStatuses.Payer.ReadyToSubmit;
 
     return new PayerEvaluationDto(
-      payerId,
-      matching.PayerName,
+      match.PayerId,
+      match.PayerName,
       payerStatus,
-      matching.RuleVersionId,
-      matching.EffectiveFrom,
-      matching.EffectiveTo,
-      errors,
+      match.RuleVersionId,
+      match.EffectiveFrom,
+      match.EffectiveTo,
+      Array.Empty<ApiErrorDto>(),
       requirements,
       blocking,
       warnings
@@ -240,61 +258,80 @@ public sealed class ReadinessEvaluationService : IReadinessEvaluationService
 
   private PayerRuleVersion? SelectRuleVersion(string payerId, string applicationType, DateOnly evaluationDate)
   {
-    var matches = _data.RuleVersions
+    var candidates = _data.RuleVersions
       .Where(r =>
         string.Equals(r.PayerId, payerId, StringComparison.OrdinalIgnoreCase) &&
-        string.Equals(r.ApplicationType, applicationType, StringComparison.OrdinalIgnoreCase) &&
-        r.EffectiveFrom <= evaluationDate &&
-        (r.EffectiveTo is null || evaluationDate < r.EffectiveTo.Value))
+        string.Equals(r.ApplicationType, applicationType, StringComparison.Ordinal))
       .ToList();
 
-    // Exactly one required; ambiguous must be treated as error (never silently Ready)
-    if (matches.Count != 1)
-      return null;
+    if (candidates.Count == 0) return null;
+
+    var matches = new List<PayerRuleVersion>();
+
+    foreach (var r in candidates)
+    {
+      if (!IsoDate.TryParseDateOnly(r.EffectiveFrom, out var from)) continue;
+
+      DateOnly? to = null;
+      if (r.EffectiveTo is not null)
+      {
+        if (!IsoDate.TryParseDateOnly(r.EffectiveTo, out var toParsed)) continue;
+        to = toParsed;
+      }
+
+      // validity interval is [from, to)
+      var inRange = evaluationDate >= from && (to is null || evaluationDate < to.Value);
+      if (inRange) matches.Add(r);
+    }
+
+    // Exactly one match required; ambiguity is treated as error => null
+    if (matches.Count != 1) return null;
 
     return matches[0];
   }
 
-  private static (DateOnly date, string source) ResolveEvaluationDate(EnrollmentApplication app, ReadinessConfig config)
+  private static (string status, string? reason, int? daysUntilExpiration) EvaluateExpiration(DateOnly expiresOn, DateOnly evaluationDate, int thresholdDays)
   {
-    if (app.SubmittedOn.HasValue)
-      return (app.SubmittedOn.Value, ReadinessStatuses.EvaluationDateSource.SubmittedOn);
+    // expiryDate < evaluationDate is Expired. Document remains valid through its expiry date.
+    if (expiresOn < evaluationDate)
+    {
+      return (ReadinessStatuses.Requirement.Expired, "Document expired.", -1);
+    }
 
-    if (config.FixedEvaluationDate.HasValue)
-      return (config.FixedEvaluationDate.Value, ReadinessStatuses.EvaluationDateSource.Configured);
+    var daysUntil = expiresOn.DayNumber - evaluationDate.DayNumber;
 
-    return (DateOnly.FromDateTime(DateTime.UtcNow), ReadinessStatuses.EvaluationDateSource.Current);
+    // Day 0 through day threshold inclusive is Expiring Soon
+    if (daysUntil <= thresholdDays)
+    {
+      return (ReadinessStatuses.Requirement.ExpiringSoon, "Document expiring soon.", daysUntil);
+    }
+
+    return (ReadinessStatuses.Requirement.PresentAndValid, null, daysUntil);
   }
 
-  private static string ResolvePayerStatus(int blockingDeficiencies, int expirationWarnings)
+  private static string AggregateOverallStatus(IReadOnlyList<string> payerStatuses)
   {
-    if (blockingDeficiencies > 0)
+    // Precedence: Incomplete > Expiring Soon > Ready to Submit
+    if (payerStatuses.Any(s => s == ReadinessStatuses.Payer.Incomplete))
+    {
       return ReadinessStatuses.Payer.Incomplete;
+    }
 
-    if (expirationWarnings > 0)
+    if (payerStatuses.Any(s => s == ReadinessStatuses.Payer.ExpiringSoon))
+    {
       return ReadinessStatuses.Payer.ExpiringSoon;
+    }
 
     return ReadinessStatuses.Payer.ReadyToSubmit;
   }
 
-  private string ResolvePayerName(string payerId)
+  private static bool IsEmptyJsonPrimitive(object? value)
   {
-    var any = _data.RuleVersions.FirstOrDefault(r => string.Equals(r.PayerId, payerId, StringComparison.OrdinalIgnoreCase));
-    return any?.PayerName ?? payerId;
-  }
+    if (value is null) return true;
 
-  private static bool IsNonEmptyPrimitive(object? value)
-  {
-    if (value is null) return false;
+    if (value is string s) return string.IsNullOrWhiteSpace(s);
 
-    return value switch
-    {
-      string s => !string.IsNullOrWhiteSpace(s),
-      bool _ => true,
-      byte or sbyte or short or ushort or int or uint or long or ulong => true,
-      float or double or decimal => true,
-      DateTime dt => dt != default,
-      _ => true // accept other JSON primitives/objects as "present" for this POC
-    };
+    // For numbers/bools, presence is sufficient (including 0/false)
+    return false;
   }
 }
