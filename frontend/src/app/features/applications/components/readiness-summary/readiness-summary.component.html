@@ -1,0 +1,24 @@
+<div class="summary-cards">
+  <div class="summary-card card-ready">
+    <div class="card-label">Ready to Submit</div>
+    <div class="card-count">{{ statusCounts.readyToSubmit }}</div>
+  </div>
+
+  <div class="summary-card card-incomplete">
+    <div class="card-label">Incomplete</div>
+    <div class="card-count">{{ statusCounts.incomplete }}</div>
+  </div>
+
+  <div class="summary-card card-expiring">
+    <div class="card-label">Expiring Soon</div>
+    <div class="card-count">{{ statusCounts.expiringSoon }}</div>
+  </div>
+
+  <div class="summary-card card-error" *ngIf="evaluationErrorCount > 0">
+    <div class="card-label">Evaluation Errors</div>
+    <div class="card-count">{{ evaluationErrorCount }}</div>
+  </div>
+</div>
+```
+
+---
