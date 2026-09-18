@@ -1,0 +1,45 @@
+{
+  "applications": [
+    {
+      "id": "app-001",
+      "providerId": "prov-001",
+      "providerName": "Dr. Jane Smith",
+      "applicationType": "NEW_ENROLLMENT",
+      "isActive": true,
+      "submittedOn": null,
+      "lastUpdated": "2026-01-10T10:30:00Z",
+      "payerTargets": [
+        { "payerId": "payer-a", "payerName": "Payer A" },
+        { "payerId": "payer-b", "payerName": "Payer B" },
+        { "payerId": "payer-c", "payerName": "Payer C" }
+      ],
+      "dataFields": {
+        "npi": "1234567890",
+        "taxId": "12-3456789"
+      },
+      "documents": [
+        { "documentId": "medical_license", "documentName": "Medical License", "expiresOn": "2026-01-20T00:00:00Z" },
+        { "documentId": "dea_certificate", "documentName": "DEA Certificate", "expiresOn": "2027-06-01T00:00:00Z" }
+      ]
+    },
+    {
+      "id": "app-002",
+      "providerId": "prov-002",
+      "providerName": "Dr. John Doe",
+      "applicationType": "RE_CREDENTIALING",
+      "isActive": true,
+      "submittedOn": "2025-12-15T00:00:00Z",
+      "lastUpdated": "2026-01-11T08:15:00Z",
+      "payerTargets": [
+        { "payerId": "payer-b", "payerName": "Payer B" }
+      ],
+      "dataFields": {
+        "npi": "",
+        "taxId": "98-7654321"
+      },
+      "documents": [
+        { "documentId": "medical_license", "documentName": "Medical License", "expiresOn": "2025-12-01T00:00:00Z" }
+      ]
+    }
+  ]
+}
