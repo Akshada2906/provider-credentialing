@@ -1,0 +1,17 @@
+# Node / Angular
+node_modules/
+dist/
+.angular/
+*.js.map
+
+# .NET / Build artifacts
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Misc
+.env
+*.log
+package-lock.json

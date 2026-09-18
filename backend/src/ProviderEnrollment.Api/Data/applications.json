@@ -1,1 +1,167 @@
-[TRUNCATED DUE TO LENGTH - Full applications.json content included in original]
+[
+  {
+    "id": "APP-001",
+    "providerId": "PRV-001",
+    "providerName": "Dr. Sarah Johnson",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-10T08:30:00Z",
+    "targetPayerIds": ["AETNA", "BCBS", "UHC"],
+    "fields": {
+      "ssn": "123-45-6789",
+      "specialty": "Internal Medicine",
+      "groupNpi": "1234567890",
+      "taxonomyCode": "207R00000X"
+    },
+    "documents": [
+      { "documentId": "NPI_CERT", "label": "NPI Certificate", "expiresOn": null },
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2027-06-30" },
+      { "documentId": "DEA_CERT", "label": "DEA Certificate", "expiresOn": "2026-10-15" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2027-01-01" },
+      { "documentId": "CV", "label": "Curriculum Vitae", "expiresOn": null },
+      { "documentId": "REFERENCES", "label": "Professional References", "expiresOn": null }
+    ]
+  },
+  {
+    "id": "APP-002",
+    "providerId": "PRV-002",
+    "providerName": "Dr. Michael Chen",
+    "applicationType": "RE_CREDENTIALING",
+    "isActive": true,
+    "submittedOn": "2026-08-15",
+    "lastUpdated": "2026-09-05T14:20:00Z",
+    "targetPayerIds": ["CIGNA", "HUMANA", "MEDICARE"],
+    "fields": {
+      "ssn": "987-65-4321",
+      "specialty": "Cardiology",
+      "taxonomyCode": "207RC0000X"
+    },
+    "documents": [
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2028-03-31" },
+      { "documentId": "DEA_CERT", "label": "DEA Certificate", "expiresOn": "2026-12-01" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2027-06-15" }
+    ]
+  },
+  {
+    "id": "APP-003",
+    "providerId": "PRV-003",
+    "providerName": "Dr. Emily Rodriguez",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-15T10:00:00Z",
+    "targetPayerIds": ["MEDICAID", "ANTHEM"],
+    "fields": {
+      "ssn": "456-78-9012",
+      "specialty": "Pediatrics",
+      "taxonomyCode": "208000000X"
+    },
+    "documents": [
+      { "documentId": "NPI_CERT", "label": "NPI Certificate", "expiresOn": null },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2026-11-30" }
+    ]
+  },
+  {
+    "id": "APP-004",
+    "providerId": "PRV-004",
+    "providerName": "Dr. James Patel",
+    "applicationType": "RE_CREDENTIALING",
+    "isActive": true,
+    "submittedOn": "2026-07-01",
+    "lastUpdated": "2026-08-20T16:45:00Z",
+    "targetPayerIds": ["KAISER", "CVSHLT"],
+    "fields": {
+      "ssn": "321-54-9876",
+      "specialty": "Orthopedic Surgery"
+    },
+    "documents": [
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2027-12-31" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2027-07-01" },
+      { "documentId": "BOARD_CERT", "label": "Board Certification", "expiresOn": "2026-10-31" },
+      { "documentId": "CV", "label": "Curriculum Vitae", "expiresOn": null }
+    ]
+  },
+  {
+    "id": "APP-005",
+    "providerId": "PRV-005",
+    "providerName": "Dr. Lisa Thompson",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-18T09:15:00Z",
+    "targetPayerIds": ["AETNA", "CIGNA", "HUMANA"],
+    "fields": {
+      "ssn": "654-32-1098",
+      "specialty": "Neurology",
+      "taxonomyCode": "2084N0400X"
+    },
+    "documents": [
+      { "documentId": "NPI_CERT", "label": "NPI Certificate", "expiresOn": null },
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2026-10-20" },
+      { "documentId": "DEA_CERT", "label": "DEA Certificate", "expiresOn": "2027-03-15" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2027-02-28" },
+      { "documentId": "BOARD_CERT", "label": "Board Certification", "expiresOn": "2027-09-30" }
+    ]
+  },
+  {
+    "id": "APP-006",
+    "providerId": "PRV-006",
+    "providerName": "Dr. Robert Kim",
+    "applicationType": "RE_CREDENTIALING",
+    "isActive": true,
+    "submittedOn": "2026-06-20",
+    "lastUpdated": "2026-07-10T11:30:00Z",
+    "targetPayerIds": ["BCBS", "UHC"],
+    "fields": {
+      "specialty": "Family Medicine",
+      "groupNpi": "9876543210",
+      "taxonomyCode": "207Q00000X"
+    },
+    "documents": [
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2028-06-30" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2027-06-20" }
+    ]
+  },
+  {
+    "id": "APP-007",
+    "providerId": "PRV-007",
+    "providerName": "Dr. Amanda Foster",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-01T13:00:00Z",
+    "targetPayerIds": ["MEDICARE", "MEDICAID", "AETNA"],
+    "fields": {
+      "ssn": "789-01-2345",
+      "specialty": "Psychiatry",
+      "taxonomyCode": "2084P0800X"
+    },
+    "documents": [
+      { "documentId": "NPI_CERT", "label": "NPI Certificate", "expiresOn": null },
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2028-12-31" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2026-09-30" },
+      { "documentId": "TAX_ID", "label": "Tax ID Documentation", "expiresOn": null }
+    ]
+  },
+  {
+    "id": "APP-008",
+    "providerId": "PRV-008",
+    "providerName": "Dr. David Martinez",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": false,
+    "submittedOn": "2025-12-01",
+    "lastUpdated": "2026-01-15T08:00:00Z",
+    "targetPayerIds": ["BCBS"],
+    "fields": {
+      "ssn": "111-22-3333",
+      "specialty": "Radiology"
+    },
+    "documents": [
+      { "documentId": "NPI_CERT", "label": "NPI Certificate", "expiresOn": null },
+      { "documentId": "MED_LICENSE", "label": "Medical License", "expiresOn": "2027-06-30" },
+      { "documentId": "MALPRACTICE_INS", "label": "Malpractice Insurance", "expiresOn": "2027-01-01" },
+      { "documentId": "CV", "label": "Curriculum Vitae", "expiresOn": null }
+    ]
+  }
+]

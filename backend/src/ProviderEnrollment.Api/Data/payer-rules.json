@@ -1,1 +1,346 @@
-[TRUNCATED DUE TO LENGTH - Full payer-rules.json content included in original]
+[
+  {
+    "ruleVersionId": "AETNA-NE-v1",
+    "payerId": "AETNA",
+    "payerName": "Aetna Health",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "AETNA-RC-v1",
+    "payerId": "AETNA",
+    "payerName": "Aetna Health",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "BCBS-NE-v1",
+    "payerId": "BCBS",
+    "payerName": "Blue Cross Blue Shield",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "cv", "label": "Curriculum Vitae", "documentId": "CV", "requiresExpirationDate": false }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "group_npi", "label": "Group NPI", "fieldKey": "groupNpi" }
+    ]
+  },
+  {
+    "ruleVersionId": "BCBS-RC-v1",
+    "payerId": "BCBS",
+    "payerName": "Blue Cross Blue Shield",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "CIGNA-NE-v1",
+    "payerId": "CIGNA",
+    "payerName": "Cigna Healthcare",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "CIGNA-RC-v1",
+    "payerId": "CIGNA",
+    "payerName": "Cigna Healthcare",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "HUMANA-NE-v1",
+    "payerId": "HUMANA",
+    "payerName": "Humana Inc",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "taxonomy_code", "label": "Taxonomy Code", "fieldKey": "taxonomyCode" }
+    ]
+  },
+  {
+    "ruleVersionId": "HUMANA-RC-v1",
+    "payerId": "HUMANA",
+    "payerName": "Humana Inc",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "UHC-NE-v1",
+    "payerId": "UHC",
+    "payerName": "UnitedHealthcare",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "cv", "label": "Curriculum Vitae", "documentId": "CV", "requiresExpirationDate": false },
+      { "key": "references", "label": "Professional References", "documentId": "REFERENCES", "requiresExpirationDate": false }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "group_npi", "label": "Group NPI", "fieldKey": "groupNpi" },
+      { "key": "taxonomy_code", "label": "Taxonomy Code", "fieldKey": "taxonomyCode" }
+    ]
+  },
+  {
+    "ruleVersionId": "UHC-RC-v1",
+    "payerId": "UHC",
+    "payerName": "UnitedHealthcare",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "MEDICARE-NE-v1",
+    "payerId": "MEDICARE",
+    "payerName": "Medicare",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "tax_id", "label": "Tax ID Documentation", "documentId": "TAX_ID", "requiresExpirationDate": false }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" },
+      { "key": "taxonomy_code", "label": "Taxonomy Code", "fieldKey": "taxonomyCode" }
+    ]
+  },
+  {
+    "ruleVersionId": "MEDICARE-RC-v1",
+    "payerId": "MEDICARE",
+    "payerName": "Medicare",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "MEDICAID-NE-v1",
+    "payerId": "MEDICAID",
+    "payerName": "Medicaid",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "MEDICAID-RC-v1",
+    "payerId": "MEDICAID",
+    "payerName": "Medicaid",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "ANTHEM-NE-v1",
+    "payerId": "ANTHEM",
+    "payerName": "Anthem Inc",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "ANTHEM-RC-v1",
+    "payerId": "ANTHEM",
+    "payerName": "Anthem Inc",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "KAISER-NE-v1",
+    "payerId": "KAISER",
+    "payerName": "Kaiser Permanente",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true },
+      { "key": "cv", "label": "Curriculum Vitae", "documentId": "CV", "requiresExpirationDate": false }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "KAISER-RC-v1",
+    "payerId": "KAISER",
+    "payerName": "Kaiser Permanente",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true },
+      { "key": "board_cert", "label": "Board Certification", "documentId": "BOARD_CERT", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "CVSHLT-NE-v1",
+    "payerId": "CVSHLT",
+    "payerName": "CVS Health / Aetna",
+    "applicationType": "NEW_ENROLLMENT",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "npi_cert", "label": "NPI Certificate", "documentId": "NPI_CERT", "requiresExpirationDate": false },
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "dea_cert", "label": "DEA Certificate", "documentId": "DEA_CERT", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "ssn", "label": "Social Security Number", "fieldKey": "ssn" },
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  },
+  {
+    "ruleVersionId": "CVSHLT-RC-v1",
+    "payerId": "CVSHLT",
+    "payerName": "CVS Health / Aetna",
+    "applicationType": "RE_CREDENTIALING",
+    "effectiveFrom": "2020-01-01",
+    "effectiveTo": null,
+    "requiredDocuments": [
+      { "key": "med_license", "label": "Medical License", "documentId": "MED_LICENSE", "requiresExpirationDate": true },
+      { "key": "malpractice_ins", "label": "Malpractice Insurance", "documentId": "MALPRACTICE_INS", "requiresExpirationDate": true }
+    ],
+    "requiredFields": [
+      { "key": "specialty", "label": "Primary Specialty", "fieldKey": "specialty" }
+    ]
+  }
+]

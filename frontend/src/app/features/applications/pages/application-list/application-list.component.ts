@@ -70,6 +70,3 @@ export class ApplicationListComponent implements OnInit {
     });
   }
 }
-```
-
----

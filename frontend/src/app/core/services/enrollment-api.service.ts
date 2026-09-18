@@ -45,6 +45,3 @@ export class EnrollmentApiService {
     return this.http.get<ApplicationListResponseDto>(`${this.baseUrl}/applications`, { params });
   }
 }
-```
-
----
