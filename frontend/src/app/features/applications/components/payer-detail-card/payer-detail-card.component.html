@@ -1,0 +1,102 @@
+<div class="payer-card">
+  <!-- Card header -->
+  <div class="card-header">
+    <div class="header-left">
+      <h3 class="payer-name">{{ payer.payerName }}</h3>
+      <span class="payer-id">{{ payer.payerId }}</span>
+    </div>
+    <div class="header-right">
+      <app-readiness-badge 
+        [status]="payer.status"
+        type="readiness">
+      </app-readiness-badge>
+    </div>
+  </div>
+
+  <!-- Rule version info -->
+  <div class="rule-info" *ngIf="payer.ruleVersionId">
+    <div class="info-item">
+      <span class="label">Rule Version:</span>
+      <span class="value">{{ payer.ruleVersionId }}</span>
+    </div>
+    <div class="info-item">
+      <span class="label">Effective From:</span>
+      <span class="value">{{ formatDate(payer.effectiveFrom) }}</span>
+    </div>
+    <div class="info-item" *ngIf="payer.effectiveTo">
+      <span class="label">Effective To:</span>
+      <span class="value">{{ formatDate(payer.effectiveTo) }}</span>
+    </div>
+  </div>
+
+  <!-- Payer-level evaluation errors -->
+  <div *ngIf="hasEvaluationErrors" class="payer-errors">
+    <h4>⚠️ Evaluation Errors</h4>
+    <ul>
+      <li *ngFor="let error of payer.evaluationErrors">{{ error }}</li>
+    </ul>
+  </div>
+
+  <!-- Summary counts -->
+  <div class="summary-counts" *ngIf="!hasEvaluationErrors">
+    <div class="count-item blocking" *ngIf="payer.blockingDeficiencyCount > 0">
+      <span class="count">{{ payer.blockingDeficiencyCount }}</span>
+      <span class="label">Blocking {{ payer.blockingDeficiencyCount === 1 ? 'Deficiency' : 'Deficiencies' }}</span>
+    </div>
+    <div class="count-item warning" *ngIf="payer.expirationWarningCount > 0">
+      <span class="count">{{ payer.expirationWarningCount }}</span>
+      <span class="label">Expiration {{ payer.expirationWarningCount === 1 ? 'Warning' : 'Warnings' }}</span>
+    </div>
+    <div class="count-item success" *ngIf="payer.blockingDeficiencyCount === 0 && payer.expirationWarningCount === 0">
+      <span class="label">✓ All requirements satisfied</span>
+    </div>
+  </div>
+
+  <!-- Requirements list -->
+  <div class="requirements-section" *ngIf="hasRequirements && !hasEvaluationErrors">
+    <h4>Requirements</h4>
+    <div class="requirements-table">
+      <div class="requirement-row" *ngFor="let req of payer.requirements">
+        <div class="requirement-main">
+          <div class="requirement-header">
+            <span class="requirement-label">{{ req.label }}</span>
+            <span class="requirement-kind">{{ req.kind === 'DOCUMENT' ? '📄 Document' : '📝 Data Field' }}</span>
+          </div>
+          <app-readiness-badge 
+            [status]="req.status"
+            type="requirement">
+          </app-readiness-badge>
+        </div>
+
+        <div class="requirement-details" *ngIf="req.reason || req.expiresOn || req.requiredAction">
+          <div class="detail-item" *ngIf="req.reason">
+            <span class="detail-label">Reason:</span>
+            <span class="detail-value">{{ req.reason }}</span>
+          </div>
+          <div class="detail-item" *ngIf="req.expiresOn">
+            <span class="detail-label">Expiration:</span>
+            <span class="detail-value">
+              {{ formatDate(req.expiresOn) }}
+              <span class="expiration-label" *ngIf="req.daysUntilExpiration !== null">
+                ({{ getExpirationLabel(req.daysUntilExpiration) }})
+              </span>
+            </span>
+          </div>
+          <div class="detail-item action" *ngIf="req.requiredAction">
+            <span class="detail-label">Action:</span>
+            <span class="detail-value">{{ req.requiredAction }}</span>
+          </div>
+          <div class="detail-item" *ngIf="req.documentId">
+            <span class="detail-label">Document ID:</span>
+            <span class="detail-value">{{ req.documentId }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!hasRequirements && !hasEvaluationErrors" class="empty-requirements">
+    <p>No requirements defined for this payer.</p>
+  </div>
+</div>

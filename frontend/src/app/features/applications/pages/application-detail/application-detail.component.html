@@ -1,0 +1,92 @@
+<div class="application-detail-container">
+  <!-- Loading state -->
+  <div *ngIf="loading()" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading application details...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error() && !loading()" class="error-state">
+    <div class="error-icon">⚠️</div>
+    <h2>Unable to Load Application</h2>
+    <p>{{ error() }}</p>
+    <button class="btn-primary" (click)="onBackToList()">Back to List</button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="application() && !loading() && !error()" class="detail-content">
+    <!-- Header -->
+    <div class="detail-header">
+      <button class="btn-back" (click)="onBackToList()">
+        ← Back to Applications
+      </button>
+      
+      <div class="header-main">
+        <div class="header-title">
+          <h1>{{ application()!.providerName }}</h1>
+          <span class="application-type">
+            {{ application()!.applicationType === 'NEW_ENROLLMENT' ? 'New Enrollment' : 'Re-Credentialing' }}
+          </span>
+        </div>
+        
+        <div class="header-status">
+          <app-readiness-badge 
+            [status]="application()!.overallStatus"
+            type="readiness">
+          </app-readiness-badge>
+        </div>
+      </div>
+
+      <div class="header-metadata">
+        <div class="metadata-item">
+          <span class="label">Provider ID:</span>
+          <span class="value">{{ application()!.providerId }}</span>
+        </div>
+        <div class="metadata-item">
+          <span class="label">Last Updated:</span>
+          <span class="value">{{ application()!.lastUpdated | date:'medium' }}</span>
+        </div>
+        <div class="metadata-item">
+          <span class="label">Evaluation Date:</span>
+          <span class="value">
+            {{ application()!.evaluationDate | date:'mediumDate' }}
+            <span class="evaluation-source">
+              ({{ getEvaluationSourceLabel(application()!.evaluationDateSource) }})
+            </span>
+          </span>
+        </div>
+        <div class="metadata-item" *ngIf="application()!.submittedOn">
+          <span class="label">Submitted On:</span>
+          <span class="value">{{ application()!.submittedOn | date:'mediumDate' }}</span>
+        </div>
+      </div>
+
+      <!-- Application-level evaluation errors -->
+      <div *ngIf="application()!.evaluationErrors.length > 0" class="evaluation-errors">
+        <h3>⚠️ Evaluation Errors</h3>
+        <ul>
+          <li *ngFor="let error of application()!.evaluationErrors">{{ error }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Payer breakdown -->
+    <div class="payer-section">
+      <h2>Payer Breakdown</h2>
+      <p class="section-description">
+        Each payer is evaluated independently. Review missing, expired, or expiring requirements below.
+      </p>
+
+      <div class="payer-cards">
+        <app-payer-detail-card
+          *ngFor="let payer of application()!.payers"
+          [payer]="payer">
+        </app-payer-detail-card>
+      </div>
+
+      <div *ngIf="application()!.payers.length === 0" class="empty-state">
+        <p>No payers targeted for this application.</p>
+      </div>
+    </div>
+  </div>
+</div>

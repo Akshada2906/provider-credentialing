@@ -1,0 +1,99 @@
+{
+  "payers": [
+    {
+      "payerId": "payer-a",
+      "payerName": "Payer A",
+      "ruleVersions": [
+        {
+          "ruleVersionId": "payer-a-ne-v1",
+          "applicationType": "NEW_ENROLLMENT",
+          "effectiveFrom": "2020-01-01T00:00:00Z",
+          "effectiveTo": null,
+          "requiredDocuments": [
+            {
+              "key": "medical_license",
+              "label": "Medical License",
+              "documentId": "medical_license",
+              "requiresExpirationDate": true,
+              "renewalAction": "Renew medical license."
+            }
+          ],
+          "requiredFields": [
+            { "key": "npi", "label": "NPI" }
+          ]
+        }
+      ]
+    },
+    {
+      "payerId": "payer-b",
+      "payerName": "Payer B",
+      "ruleVersions": [
+        {
+          "ruleVersionId": "payer-b-ne-v1",
+          "applicationType": "NEW_ENROLLMENT",
+          "effectiveFrom": "2020-01-01T00:00:00Z",
+          "effectiveTo": null,
+          "requiredDocuments": [
+            {
+              "key": "dea_certificate",
+              "label": "DEA Certificate",
+              "documentId": "dea_certificate",
+              "requiresExpirationDate": true,
+              "renewalAction": "Renew DEA certificate."
+            },
+            {
+              "key": "board_certification",
+              "label": "Board Certification",
+              "documentId": "board_certification",
+              "requiresExpirationDate": true,
+              "renewalAction": "Renew board certification."
+            }
+          ],
+          "requiredFields": [
+            { "key": "taxId", "label": "Tax ID" }
+          ]
+        },
+        {
+          "ruleVersionId": "payer-b-rc-v1",
+          "applicationType": "RE_CREDENTIALING",
+          "effectiveFrom": "2020-01-01T00:00:00Z",
+          "effectiveTo": null,
+          "requiredDocuments": [
+            {
+              "key": "medical_license",
+              "label": "Medical License",
+              "documentId": "medical_license",
+              "requiresExpirationDate": true,
+              "renewalAction": "Renew medical license."
+            }
+          ],
+          "requiredFields": [
+            { "key": "npi", "label": "NPI" }
+          ]
+        }
+      ]
+    },
+    {
+      "payerId": "payer-c",
+      "payerName": "Payer C",
+      "ruleVersions": [
+        {
+          "ruleVersionId": "payer-c-ne-v1",
+          "applicationType": "NEW_ENROLLMENT",
+          "effectiveFrom": "2020-01-01T00:00:00Z",
+          "effectiveTo": null,
+          "requiredDocuments": [
+            {
+              "key": "medical_license",
+              "label": "Medical License",
+              "documentId": "medical_license",
+              "requiresExpirationDate": true,
+              "renewalAction": "Renew medical license."
+            }
+          ],
+          "requiredFields": []
+        }
+      ]
+    }
+  ]
+}
