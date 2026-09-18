@@ -13,52 +13,81 @@ builder.Services.AddControllers()
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
   });
 
-builder.Services.Configure<ApiBehaviorOptions>(o =>
-{
-  // Ensure consistent ProblemDetails for model-binding errors
-  o.SuppressModelStateInvalidFilter = false;
-});
+builder.Services.Configure<JsonDataOptions>(builder.Configuration.GetSection("Data"));
+builder.Services.AddSingleton<IEnrollmentDataService, JsonEnrollmentDataService>();
+builder.Services.AddSingleton<IReadinessEvaluationService, ReadinessEvaluationService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IEnrollmentDataService, JsonEnrollmentDataService>();
-builder.Services.AddSingleton<IReadinessEvaluationService, ReadinessEvaluationService>();
-
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy("DevCors", p =>
+  options.AddPolicy("DevCors", policy =>
   {
-    var origin = builder.Configuration["Frontend:Origin"];
+    var origin = builder.Configuration["Cors:FrontendOrigin"];
     if (!string.IsNullOrWhiteSpace(origin))
     {
-      p.WithOrigins(origin)
+      policy.WithOrigins(origin)
         .AllowAnyHeader()
         .AllowAnyMethod();
+    }
+    else
+    {
+      policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     }
   });
 });
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+  options.InvalidModelStateResponseFactory = context =>
+  {
+    var problem = new ProblemDetails
+    {
+      Title = "Request validation failed.",
+      Status = StatusCodes.Status400BadRequest,
+      Type = "https://httpstatuses.com/400"
+    };
+
+    problem.Extensions["code"] = "INVALID_REQUEST";
+    problem.Extensions["errors"] = context.ModelState
+      .Where(kvp => kvp.Value?.Errors.Count > 0)
+      .ToDictionary(
+        kvp => kvp.Key,
+        kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+
+    return new BadRequestObjectResult(problem);
+  };
+});
+
 var app = builder.Build();
 
-app.UseExceptionHandler(exceptionApp =>
+app.UseExceptionHandler(handlerApp =>
 {
-  exceptionApp.Run(async context =>
+  handlerApp.Run(async context =>
   {
-    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-    context.Response.ContentType = "application/problem+json";
+    var feature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+    var ex = feature?.Error;
+
+    var (status, code, title) = ex switch
+    {
+      ProviderEnrollment.Api.Services.ConfigurationValidationException => (StatusCodes.Status500InternalServerError, "CONFIG_INVALID", "Server configuration is invalid."),
+      ProviderEnrollment.Api.Services.NotFoundException => (StatusCodes.Status404NotFound, "NOT_FOUND", "Resource not found."),
+      ProviderEnrollment.Api.Services.BadRequestException => (StatusCodes.Status400BadRequest, "BAD_REQUEST", "Request is invalid."),
+      _ => (StatusCodes.Status500InternalServerError, "SERVER_ERROR", "An unexpected error occurred.")
+    };
 
     var problem = new ProblemDetails
     {
-      Status = StatusCodes.Status500InternalServerError,
-      Title = "An unexpected error occurred.",
-      Type = "https://httpstatuses.com/500",
-      Extensions =
-      {
-        ["code"] = "UNHANDLED_ERROR"
-      }
+      Title = title,
+      Status = status,
+      Type = $"https://httpstatuses.com/{status}"
     };
 
+    problem.Extensions["code"] = code;
+
+    context.Response.StatusCode = status;
+    context.Response.ContentType = "application/problem+json";
     await context.Response.WriteAsJsonAsync(problem);
   });
 });
@@ -72,12 +101,10 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
-// Force-load and validate data at startup (fail fast)
 using (var scope = app.Services.CreateScope())
 {
+  // Force startup validation and deterministic snapshot loading
   _ = scope.ServiceProvider.GetRequiredService<IEnrollmentDataService>();
 }
 
 app.Run();
-
-public partial class Program { }
