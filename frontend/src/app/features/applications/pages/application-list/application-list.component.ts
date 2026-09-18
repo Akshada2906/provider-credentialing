@@ -47,8 +47,7 @@ export class ApplicationListComponent implements OnInit {
   }
 
   onApplicationClick(application: ApplicationListItemDto): void {
-    // Navigation to detail view will be implemented in S2
-    console.log('Application clicked:', application.id);
+    this.router.navigate(['/applications', application.id]);
   }
 
   private loadApplications(): void {

@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api-config';
 import {
   ApplicationQueryParams,
-  ApplicationListResponseDto
+  ApplicationListResponseDto,
+  ApplicationEvaluationDto
 } from '../models/enrollment.models';
 
 @Injectable({
@@ -13,7 +14,7 @@ import {
 export class EnrollmentApiService {
   private readonly baseUrl = API_CONFIG.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Retrieves the active application work queue with optional filtering, searching, and sorting.
@@ -43,5 +44,13 @@ export class EnrollmentApiService {
     }
 
     return this.http.get<ApplicationListResponseDto>(`${this.baseUrl}/applications`, { params });
+  }
+
+  /**
+   * Retrieves full evaluation details for a single application, including all payer-specific
+   * requirement breakdowns, evaluation date basis, and any evaluation errors.
+   */
+  getApplicationDetail(id: string): Observable<ApplicationEvaluationDto> {
+    return this.http.get<ApplicationEvaluationDto>(`${this.baseUrl}/applications/${id}`);
   }
 }
