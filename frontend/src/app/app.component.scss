@@ -1,0 +1,56 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.app-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.app-nav a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.app-nav a:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.app-nav a.active {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem 0;
+}
+```
+
+---
