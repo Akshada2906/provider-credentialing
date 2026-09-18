@@ -1,0 +1,53 @@
+.readiness-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.badge-ready {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-incomplete {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-expiring {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-valid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-missing {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-expired {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-error {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.badge-default {
+  background-color: #e7e7e7;
+  color: #333;
+}
+```
+
+---
