@@ -1,0 +1,83 @@
+<div class="filters-container">
+  <div class="filters-row">
+    <div class="filter-group">
+      <label for="status-filter">Status</label>
+      <select 
+        id="status-filter"
+        [value]="statusFilter()"
+        (change)="onStatusChange($any($event.target).value)">
+        <option value="">All Statuses</option>
+        <option *ngFor="let status of statusOptions" [value]="status">
+          {{ status }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="payer-filter">Payer ID</label>
+      <input 
+        id="payer-filter"
+        type="text"
+        placeholder="Enter payer ID"
+        [value]="payerIdFilter()"
+        (input)="onPayerIdChange($any($event.target).value)">
+    </div>
+
+    <div class="filter-group">
+      <label for="type-filter">Application Type</label>
+      <select 
+        id="type-filter"
+        [value]="applicationTypeFilter()"
+        (change)="onApplicationTypeChange($any($event.target).value)">
+        <option value="">All Types</option>
+        <option *ngFor="let type of applicationTypeOptions" [value]="type.value">
+          {{ type.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="search-input">Search</label>
+      <input 
+        id="search-input"
+        type="text"
+        placeholder="Provider name or application ID"
+        [value]="searchTerm()"
+        (input)="onSearchChange($any($event.target).value)">
+    </div>
+  </div>
+
+  <div class="filters-row">
+    <div class="filter-group">
+      <label for="sort-by">Sort By</label>
+      <select 
+        id="sort-by"
+        [value]="sortBy()"
+        (change)="onSortByChange($any($event.target).value)">
+        <option *ngFor="let option of sortByOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="sort-direction">Direction</label>
+      <select 
+        id="sort-direction"
+        [value]="sortDirection()"
+        (change)="onSortDirectionChange($any($event.target).value)">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+    </div>
+
+    <div class="filter-group filter-actions">
+      <button type="button" class="secondary" (click)="clearFilters()">
+        Clear Filters
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+---

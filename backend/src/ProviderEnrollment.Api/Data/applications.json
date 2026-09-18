@@ -1,0 +1,237 @@
+[
+  {
+    "id": "APP-READY-001",
+    "providerId": "PROV-001",
+    "providerName": "Dr. John Smith",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-18T10:00:00Z",
+    "targetPayers": [{ "payerId": "PAYER-001" }],
+    "documents": [
+      { "documentId": "DOC-1", "key": "DOC_W9", "label": "W-9 Form", "expiresOn": null },
+      { "documentId": "DOC-2", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2027-02-01" }
+    ],
+    "fields": {
+      "NPI": "1234567890"
+    }
+  },
+  {
+    "id": "APP-INCOMPLETE-MISSING-DOC",
+    "providerId": "PROV-002",
+    "providerName": "Dr. Alicia Brown",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-17T12:00:00Z",
+    "targetPayers": [{ "payerId": "PAYER-001" }],
+    "documents": [
+      { "documentId": "DOC-10", "key": "DOC_W9", "label": "W-9 Form", "expiresOn": null }
+    ],
+    "fields": {
+      "NPI": "5555555555"
+    }
+  },
+  {
+    "id": "APP-EXPIRING-45D",
+    "providerId": "PROV-003",
+    "providerName": "Dr. Emily Davis",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-16T09:30:00Z",
+    "targetPayers": [{ "payerId": "PAYER-003" }],
+    "documents": [
+      { "documentId": "DOC-20", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-11-02" }
+    ],
+    "fields": {
+      "NPI": "9999999999"
+    }
+  },
+  {
+    "id": "APP-EXPIRED-DOC",
+    "providerId": "PROV-004",
+    "providerName": "Dr. Michael Lee",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-15T08:00:00Z",
+    "targetPayers": [{ "payerId": "PAYER-003" }],
+    "documents": [
+      { "documentId": "DOC-30", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-09-17" }
+    ],
+    "fields": {
+      "NPI": "1111111111"
+    }
+  },
+  {
+    "id": "APP-MISSING-FIELD",
+    "providerId": "PROV-005",
+    "providerName": "Dr. Nora Patel",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-14T14:15:00Z",
+    "targetPayers": [{ "payerId": "PAYER-002" }],
+    "documents": [
+      { "documentId": "DOC-40", "key": "DOC_CV", "label": "Curriculum Vitae", "expiresOn": null }
+    ],
+    "fields": {
+      "TAX_ID": ""
+    }
+  },
+  {
+    "id": "APP-NON-EXPIRING-DOC",
+    "providerId": "PROV-006",
+    "providerName": "Dr. Samuel Nguyen",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-13T11:10:00Z",
+    "targetPayers": [{ "payerId": "PAYER-002" }],
+    "documents": [
+      { "documentId": "DOC-50", "key": "DOC_CV", "label": "Curriculum Vitae", "expiresOn": null }
+    ],
+    "fields": {
+      "TAX_ID": "12-3456789"
+    }
+  },
+  {
+    "id": "APP-MULTI-PAYER-MIXED",
+    "providerId": "PROV-007",
+    "providerName": "Dr. Karen Wilson",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-12T16:45:00Z",
+    "targetPayers": [
+      { "payerId": "PAYER-001" },
+      { "payerId": "PAYER-003" },
+      { "payerId": "PAYER-002" }
+    ],
+    "documents": [
+      { "documentId": "DOC-60", "key": "DOC_W9", "label": "W-9 Form", "expiresOn": null },
+      { "documentId": "DOC-61", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2027-01-01" },
+      { "documentId": "DOC-62", "key": "DOC_CV", "label": "Curriculum Vitae", "expiresOn": null },
+      { "documentId": "DOC-63", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-11-02" }
+    ],
+    "fields": {
+      "NPI": "2222222222",
+      "TAX_ID": "98-7654321"
+    }
+  },
+  {
+    "id": "APP-HISTORICAL-RULE-SELECT",
+    "providerId": "PROV-008",
+    "providerName": "Dr. Olivia Martinez",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": "2026-08-15",
+    "lastUpdated": "2026-09-11T10:20:00Z",
+    "targetPayers": [{ "payerId": "PAYER-001" }],
+    "documents": [
+      { "documentId": "DOC-70", "key": "DOC_W9", "label": "W-9 Form", "expiresOn": null },
+      { "documentId": "DOC-71", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-11-14" }
+    ],
+    "fields": {
+      "NPI": "3333333333"
+    }
+  },
+  {
+    "id": "APP-BOUNDARY-MINUS1",
+    "providerId": "PROV-009",
+    "providerName": "Dr. Boundary Minus One",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-10T09:00:00Z",
+    "targetPayers": [{ "payerId": "PAYER-003" }],
+    "documents": [
+      { "documentId": "DOC-80", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-09-17" }
+    ],
+    "fields": { "NPI": "4444444444" }
+  },
+  {
+    "id": "APP-BOUNDARY-0",
+    "providerId": "PROV-010",
+    "providerName": "Dr. Boundary Zero",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-10T09:05:00Z",
+    "targetPayers": [{ "payerId": "PAYER-003" }],
+    "documents": [
+      { "documentId": "DOC-81", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-09-18" }
+    ],
+    "fields": { "NPI": "5555555556" }
+  },
+  {
+    "id": "APP-BOUNDARY-90",
+    "providerId": "PROV-011",
+    "providerName": "Dr. Boundary Ninety",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-10T09:10:00Z",
+    "targetPayers": [{ "payerId": "PAYER-003" }],
+    "documents": [
+      { "documentId": "DOC-82", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-12-17" }
+    ],
+    "fields": { "NPI": "5555555557" }
+  },
+  {
+    "id": "APP-BOUNDARY-91",
+    "providerId": "PROV-012",
+    "providerName": "Dr. Boundary Ninety One",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-10T09:15:00Z",
+    "targetPayers": [{ "payerId": "PAYER-003" }],
+    "documents": [
+      { "documentId": "DOC-83", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2026-12-18" }
+    ],
+    "fields": { "NPI": "5555555558" }
+  },
+  {
+    "id": "APP-NO-MATCHING-RULE",
+    "providerId": "PROV-013",
+    "providerName": "Dr. No Rule Match",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-09T13:00:00Z",
+    "targetPayers": [{ "payerId": "PAYER-999" }],
+    "documents": [],
+    "fields": { "NPI": "6666666666" }
+  },
+  {
+    "id": "APP-RE-CRED-001",
+    "providerId": "PROV-014",
+    "providerName": "Dr. ReCredential Sample",
+    "applicationType": "RE_CREDENTIALING",
+    "isActive": true,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-08T15:30:00Z",
+    "targetPayers": [{ "payerId": "PAYER-001" }],
+    "documents": [
+      { "documentId": "DOC-90", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2027-03-01" }
+    ],
+    "fields": { "NPI": "7777777777" }
+  },
+  {
+    "id": "APP-INACTIVE-001",
+    "providerId": "PROV-015",
+    "providerName": "Dr. Inactive Excluded",
+    "applicationType": "NEW_ENROLLMENT",
+    "isActive": false,
+    "submittedOn": null,
+    "lastUpdated": "2026-09-01T08:00:00Z",
+    "targetPayers": [{ "payerId": "PAYER-001" }],
+    "documents": [
+      { "documentId": "DOC-100", "key": "DOC_W9", "label": "W-9 Form", "expiresOn": null },
+      { "documentId": "DOC-101", "key": "DOC_LICENSE", "label": "State License", "expiresOn": "2027-02-01" }
+    ],
+    "fields": { "NPI": "8888888888" }
+  }
+]
