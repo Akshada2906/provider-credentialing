@@ -99,6 +99,3 @@ describe('ApplicationListComponent', () => {
     expect(compiled.querySelector('.empty-state')).toBeTruthy();
   });
 });
-```
-
----

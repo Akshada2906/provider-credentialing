@@ -84,6 +84,3 @@ export interface ApplicationEvaluationDto {
   evaluationErrors: string[];
   payers: PayerEvaluationDto[];
 }
-```
-
----

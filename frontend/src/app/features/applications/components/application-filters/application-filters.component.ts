@@ -114,6 +114,3 @@ export class ApplicationFiltersComponent {
     this.queryChange.emit(query);
   }
 }
-```
-
----

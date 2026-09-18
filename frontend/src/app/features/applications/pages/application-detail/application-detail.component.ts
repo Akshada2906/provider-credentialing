@@ -42,6 +42,19 @@ export class ApplicationDetailComponent implements OnInit {
     this.router.navigate(['/applications']);
   }
 
+  getEvaluationSourceLabel(source: string): string {
+    switch (source) {
+      case 'SUBMITTED_ON':
+        return 'Submission Date';
+      case 'CONFIGURED':
+        return 'Configured Date';
+      case 'CURRENT':
+        return 'System Date';
+      default:
+        return source;
+    }
+  }
+
   private loadApplicationDetail(id: string): void {
     this.loading.set(true);
     this.error.set(null);

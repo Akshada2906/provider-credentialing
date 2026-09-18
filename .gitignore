@@ -1,0 +1,42 @@
+# ==========================================
+# .NET / C#
+# ==========================================
+**/[Bb]in/
+**/[Oo]bj/
+**/[Tt]est[Rr]esults/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+packages/
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# ==========================================
+# Node / Angular
+# ==========================================
+node_modules/
+.angular/
+dist/
+tmp/
+out-tsc/
+bazel-out/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ==========================================
+# IDEs and Editors
+# ==========================================
+.vs/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

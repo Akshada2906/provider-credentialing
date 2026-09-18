@@ -17,6 +17,3 @@ export class ReadinessSummaryComponent {
   };
   @Input() evaluationErrorCount: number = 0;
 }
-```
-
----

@@ -65,7 +65,7 @@ public sealed class ReadinessEvaluationService : IReadinessEvaluationService
       applicationErrorsCollector.Add($"Payer '{payerId}' could not be evaluated.");
       return new PayerEvaluationDto(
         payerId,
-        payerName: ResolvePayerName(payerId),
+        PayerName: ResolvePayerName(payerId),
         Status: null,
         RuleVersionId: null,
         EffectiveFrom: null,
